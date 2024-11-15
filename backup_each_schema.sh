@@ -4,10 +4,10 @@ export PGDATABASE=gpadmin
 
 #init
 
-mkdir -p ./all_bk
+mkdir -p ./pg_dumpall
 rm -rf *.sql
 rm -rf *.ori
-rm -rf ./all_bk/*
+rm -rf ./pg_dumpall/*.sql
 
 #pg_dumpall
 
