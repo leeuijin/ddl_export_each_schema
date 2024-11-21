@@ -39,15 +39,15 @@ SCHEMA_NAME=$(psql -U gpadmin -t -A -c "SELECT nspname FROM pg_catalog.pg_namesp
 
 #each user schema ddl export
 
-IFS=$'\n'
+IFS=$'\n' 
 for nspname in $SCHEMA_NAME; do
     if [ -n "$nspname" ]; then
 	pg_dump --schema=$nspname --schema-only  > $nspname.sql
 	#cp $nspname.sql $nspname.ori
 	cat $nspname.sql |grep -B 1 'PRIMARY KEY' > PK.sql
 	sed 'N;s/\n/ /' PK.sql> $nspname"_crt_idx".sql
-	cat $nspname.sql |grep 'CREATE INDEX' 		>> $nspname"_crt_idx".sql
-	sed 's/CREATE INDEX/-- CREATE INDEX/g' $nspname.sql  > $nspname"_without_index".sql
+	cat $nspname.sql |grep 'CREATE INDEX' 		>> $nspname"_crt_idx".sql 
+	cat $nspname.sql | sed 's/ALTER TABLE ONLY/-- ALTER TABLE ONLY/' | sed 's/ADD CONSTRAINT/-- ADD CONSTRAINT/' > $nspname"_without_index".sql
 	rm PK.sql
     fi
 done
