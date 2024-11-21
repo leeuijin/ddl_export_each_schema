@@ -10,8 +10,9 @@ SCHEMA_NAME=$(psql -U gpadmin -t -A -c "SELECT nspname FROM pg_catalog.pg_namesp
 
 #each user schema ddl export
 
-mkdir -p ./all_backup/ddl
-PWD=./all_backup/ddl 
+mkdir -p ./all_backup/5_ddl
+
+PWD=./all_backup/5_ddl 
 
 IFS=$'\n' 
 for nspname in $SCHEMA_NAME; do
