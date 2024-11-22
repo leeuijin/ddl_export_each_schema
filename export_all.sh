@@ -1,6 +1,8 @@
 #!/bin/bash
 TODAY=$(date "+%Y%m%d%H%M")
 
+mkdir -p ./all_backup/log
+
 export PGDATABASE=gpadmin
 
 sh 0_init.sh > ./all_backup/log/0_init.log.$TODAY 2>&1

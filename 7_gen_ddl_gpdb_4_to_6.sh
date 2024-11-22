@@ -22,9 +22,9 @@ for nspname in $SCHEMA_NAME; do
 	pg_dump --schema=$nspname --schema-only  > $PWD/$nspname.sql
 	cp $PWD/$nspname.sql $PWD/$nspname.ori
 	cat $PWD/$nspname.sql |grep -B 1 'PRIMARY KEY' > $PWD/PK.sql
-	sed 'N;s/\n/ /' $PWD/PK.sql> $PWD/$nspname"_crt_idx".sql
-	cat $PWD/$nspname.sql |grep 'CREATE INDEX' 		>> $PWD/$nspname"_crt_idx".sql 
-	cat $PWD/$nspname.sql |sed 's/CREATE INDEX/ -- CREATE INDEX/g' | sed 's/ALTER TABLE ONLY/-- ALTER TABLE ONLY/g' | sed 's/ADD CONSTRAINT/-- ADD CONSTRAINT/g' > $PWD/$nspname"_without_index".sql	
+	#sed 'N;s/\n/ /' $PWD/PK.sql> $PWD/$nspname"_crt_idx".sql
+        cat $PWD/PK.sql | sed 's/ALTER TABLE ONLY /ALTER TABLE /g'|sed 's/--/ /g' > $PWD/$nspname"_crt_idx".sql
+	cat $PWD/$nspname.sql |sed 's/CREATE INDEX/ -- CREATE INDEX/g' | sed 's/ALTER TABLE ONLY/-- ALTER TABLE /g' | sed 's/ADD CONSTRAINT /-- ADD CONSTRAINT /g' > $PWD/$nspname"_without_index".sql	
 	cat $PWD/$nspname"_without_index".sql |sed 's/appendonly/APPENDOPTIMIZED/g' |sed 's/compresstype=zlib/compresstype=zstd/g' |sed 's/compresslevel=5/compresslevel=7/g' > $GEN/gen_$nspname"_without_index".sql
 	rm $PWD/PK.sql
     fi
