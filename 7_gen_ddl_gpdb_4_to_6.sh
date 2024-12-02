@@ -29,3 +29,5 @@ for nspname in $SCHEMA_NAME; do
 	rm $PWD/PK.sql
     fi
 done
+
+cp $PWD/*_crt_idx.sql $GEN/.
